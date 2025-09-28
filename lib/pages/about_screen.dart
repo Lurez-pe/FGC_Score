@@ -47,7 +47,7 @@ class _AboutScreenState extends State<AboutScreen> {
           children: [
             const SizedBox(height: 20),
             Image.asset(
-            'assets/images/eco-equilibrium.png',
+            'assets/images/TEAM_PERU.png',
             width: 1800,  // Reducido de 80 a 60
             height: 180, // Reducido de 80 a 60
             fit: BoxFit.contain,),
