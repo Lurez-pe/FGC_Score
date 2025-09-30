@@ -1,8 +1,41 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- PERMISOS PARA LOS ENLACES EXTERNOS -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+    <queries>
+        <!-- Para navegadores web -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+        <!-- Para apps de email -->
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+        <!-- Para GitHub app -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+            <data android:host="github.com" />
+        </intent>
+        <!-- Para dominios específicos -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+            <data android:host="domingo-savio.edu.pe" />
+        </intent>
+
+    </queries>
+
     <application
         android:label="FIRST Global 2025 Scorer"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:theme="@style/LaunchTheme">
         <activity
             android:name=".MainActivity"
             android:exported="true"
