@@ -236,6 +236,7 @@ class _HomePageState extends State<HomePage> {
         foregroundColor: Colors.white,
       ),
       drawer: _buildDrawer(context),
+      backgroundColor: Colors.grey[350],
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -294,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey,
+                  color: Colors.black54,
                 ),
               ),
             ),

@@ -35,7 +35,7 @@ class BarrierInput extends StatelessWidget {
               label: initialValue.toString(),
               onChanged: (value) => onChanged(value.toInt()),
               //Perzonalización del color del slider
-              activeColor: Color.fromARGB(255, 116, 12, 9),
+              activeColor: Colors.blue[800]!,
               inactiveColor: Colors.grey[300],
               //thumbColor: Color.fromARGB(255, 116, 12, 9),
             ),
