@@ -82,7 +82,7 @@ class _AboutScreenState extends State<AboutScreen> {
           children: [
             const SizedBox(height: 20),
             Image.asset(
-              'assets/images/TEAM_PERU.png',
+              'assets/images/TEAM PERU_2.png',
               width: 180,
               height: 180,
               fit: BoxFit.contain,
