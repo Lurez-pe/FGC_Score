@@ -27,11 +27,46 @@ class _AboutScreenState extends State<AboutScreen> {
     });
   }
 
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+  Future<void> _launchURL(String url, {String? fallbackUrl}) async {
+    try {
+      final Uri uri = Uri.parse(url);
+      
+      // Verificar si se puede lanzar la URL
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication,
+        );
+      } else if (fallbackUrl != null) {
+        // Intentar con URL alternativa
+        final Uri fallbackUri = Uri.parse(fallbackUrl);
+        if (await canLaunchUrl(fallbackUri)) {
+          await launchUrl(
+            fallbackUri,
+            mode: LaunchMode.externalApplication,
+          );
+        } else {
+          _showSnackBar('No se pudo abrir el enlace. Verifica que tengas una aplicación compatible instalada.');
+        }
+      } else {
+        _showSnackBar('No se pudo abrir el enlace. Verifica que tengas una aplicación compatible instalada.');
+      }
+    } catch (e) {
+      _showSnackBar('Error al abrir enlace: $e');
     }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: () {},
+        ),
+      ),
+    );
   }
 
   @override
@@ -40,17 +75,33 @@ class _AboutScreenState extends State<AboutScreen> {
       appBar: AppBar(
         title: const Text('About'),
       ),
-      body: SingleChildScrollView( // ¡ESTO ES LO QUE FALTABA!
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
             Image.asset(
-            'assets/images/eco-equilibrium.png',
-            width: 1800,  // Reducido de 80 a 60
-            height: 180, // Reducido de 80 a 60
-            fit: BoxFit.contain,),
+              'assets/images/TEAM PERU_2.png',
+              width: 180,
+              height: 180,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.flag,
+                    size: 60,
+                    color: Colors.grey,
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 20),
             Text(
               appName,
@@ -60,7 +111,7 @@ class _AboutScreenState extends State<AboutScreen> {
               ),
             ),
             Text(
-              'Versión: $appVersion',
+              'Version: $appVersion',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[600],
@@ -90,7 +141,7 @@ class _AboutScreenState extends State<AboutScreen> {
             _buildSocialButtons(),
             const SizedBox(height: 20),
             _buildAppInfo(),
-            const SizedBox(height: 30), // Espacio adicional al final
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -108,7 +159,7 @@ class _AboutScreenState extends State<AboutScreen> {
             const Divider(),
             _buildInfoRow('Email', 'luis.perez@ucsm.edu.pe'),
             const Divider(),
-            _buildInfoRow('Web', 'www.domingo-savio.edu.pe'),
+            _buildInfoRow('Web', 'domingo-savio.edu.pe'),
           ],
         ),
       ),
@@ -125,7 +176,7 @@ class _AboutScreenState extends State<AboutScreen> {
             title,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          Flexible( // Para evitar overflow en textos largos
+          Flexible(
             child: Text(
               value,
               overflow: TextOverflow.ellipsis,
@@ -154,26 +205,65 @@ class _AboutScreenState extends State<AboutScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.public, size: 30),
-                  onPressed: () => _launchURL('https://domingo-savio.edu.pe/'),
-                  tooltip: 'Visitar sitio web',
+                _buildSocialButton(
+                  icon: Icons.public,
+                  label: 'Website',
+                  onTap: () => _launchURL(
+                    'https://domingo-savio.edu.pe/',
+                    fallbackUrl: 'https://www.google.com/search?q=domingo+savio',
+                  ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.email, size: 30),
-                  onPressed: () => _launchURL('mailto:luis.perez@ucsm.edu.pe'),
-                  tooltip: 'Enviar email',
+                _buildSocialButton(
+                  icon: Icons.email,
+                  label: 'Email',
+                  onTap: () => _launchURL(
+                    'mailto:luis.perez@ucsm.edu.pe?subject=About%20FIRST%20Global%20Scorer%20App&body=Hello%20Luis,',
+                    fallbackUrl: 'https://mail.google.com/mail/?view=cm&fs=1&to=luis.perez@ucsm.edu.pe&su=About FIRST Global Scorer App&body=Hello Luis,',
+                  ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.code, size: 30),
-                  onPressed: () => _launchURL('https://github.com/Lurez-pe/FGC_Score'),
-                  tooltip: 'Ver código fuente',
+                _buildSocialButton(
+                  icon: Icons.code,
+                  label: 'Source Code',
+                  onTap: () => _launchURL(
+                    'https://github.com/Lurez-pe/FGC_Score',
+                    fallbackUrl: 'https://github.com',
+                  ),
                 ),
               ],
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Make sure you have a browser and email app installed',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSocialButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Column(
+      children: [
+        IconButton(
+          icon: Icon(icon, size: 30),
+          onPressed: onTap,
+          tooltip: label,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12),
+        ),
+      ],
     );
   }
 

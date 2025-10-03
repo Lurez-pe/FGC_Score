@@ -18,7 +18,7 @@ class ResultsDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
-      color: Color.fromARGB(75, 116, 12, 9),
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -33,7 +33,7 @@ class ResultsDisplay extends StatelessWidget {
             Center(
               child: Text(
                 'Total Score: $score',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
             ),
             

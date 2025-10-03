@@ -236,6 +236,7 @@ class _HomePageState extends State<HomePage> {
         foregroundColor: Colors.white,
       ),
       drawer: _buildDrawer(context),
+      backgroundColor: Colors.grey[350],
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -290,11 +291,11 @@ class _HomePageState extends State<HomePage> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                '© 2025 Ing. Luis Perez - v1.0.0\n TEAM PERU - FIRST Global 2025\n\n',
+                '© 2025 Ing. Luis Perez - v1.0.1\n TEAM PERU - FIRST Global 2025\n\n',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey,
+                  color: Colors.black54,
                 ),
               ),
             ),

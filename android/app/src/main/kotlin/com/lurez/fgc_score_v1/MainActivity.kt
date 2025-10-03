@@ -1,4 +1,4 @@
-package com.example.fgc_score_vq
+package com.lurez.fgc_score_v1
 
 import io.flutter.embedding.android.FlutterActivity
 

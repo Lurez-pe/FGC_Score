@@ -51,7 +51,7 @@ class RobotPositionSelector extends StatelessWidget {
               label: robotsBalanced.toString(),
               onChanged: (value) => onRobotsBalancedChanged(value.toInt()),
               //Perzonalización del color del slider
-              activeColor: Color.fromARGB(255, 116, 12, 9),
+              activeColor: Colors.green[600]!,
               inactiveColor: Colors.grey[300],
             ),
             Row(
